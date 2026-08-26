@@ -92,6 +92,43 @@ tailwind.config = {
     padding: 0 14px; font-weight: 700; cursor: pointer;
   }
   #kio-chat-send:disabled { opacity: .5; cursor: not-allowed; }
+
+  /* --- Terminal panel (chỉ chạy khi kết nối tới backend trên localhost) --- */
+  #kio-term-toggle {
+    position: fixed; right: 88px; bottom: 20px; z-index: 60;
+    width: 56px; height: 56px; border-radius: 9999px;
+    background: #11161f; color: #4ade80; border: 1px solid #1e2633;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; font-size: 20px; font-family: monospace;
+    box-shadow: 0 12px 40px -8px rgba(74,222,128,.35);
+  }
+  #kio-term-panel {
+    position: fixed; right: 20px; bottom: 88px; z-index: 61;
+    width: min(460px, calc(100vw - 40px));
+    height: min(420px, calc(100vh - 140px));
+    background: #0a0e14; border: 1px solid #1e2633; border-radius: 16px;
+    display: none; flex-direction: column; overflow: hidden;
+    box-shadow: 0 24px 60px -12px rgba(0,0,0,.6);
+  }
+  #kio-term-panel.open { display: flex; }
+  #kio-term-header {
+    padding: 12px 16px; border-bottom: 1px solid #1e2633;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  #kio-term-select {
+    background: #11161f; border: 1px solid #1e2633; color: #e2e8f0;
+    border-radius: 8px; padding: 6px 8px; font-family: inherit; font-size: 12.5px;
+  }
+  #kio-term-run {
+    background: #4ade80; color: #0a0e14; border: none; border-radius: 8px;
+    padding: 6px 14px; font-weight: 700; cursor: pointer; font-size: 12.5px;
+  }
+  #kio-term-run:disabled { opacity: .5; cursor: not-allowed; }
+  #kio-term-output {
+    flex: 1; overflow-y: auto; padding: 12px 14px; font-size: 12.5px;
+    color: #4ade80; white-space: pre-wrap; background: #050709;
+  }
+  #kio-term-note { padding: 8px 14px; font-size: 11px; color: #64748b; border-top: 1px solid #1e2633; }
 </style>
 </head>
 <body class="bg-ink text-slate-300 font-mono antialiased">
@@ -333,162 +370,4 @@ tailwind.config = {
     <h2 class="text-3xl font-bold text-slate-50 mb-8">Dự án khác</h2>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
       <a href="https://github.com/zskbot/codeql" target="_blank" rel="noopener" class="card p-5 rounded-xl bg-panel border border-line block">
-        <h4 class="text-slate-100 font-semibold mb-1">codeql</h4>
-        <p class="text-sm text-slate-400">Libraries &amp; queries cho security research và code scanning.</p>
-        <p class="text-xs text-sky mt-3">★ 3</p>
-      </a>
-      <a href="https://github.com/zskbot/auren-os" target="_blank" rel="noopener" class="card p-5 rounded-xl bg-panel border border-line block">
-        <h4 class="text-slate-100 font-semibold mb-1">auren-os</h4>
-        <p class="text-sm text-slate-400">Hệ điều hành tác nhân Auren.</p>
-        <p class="text-xs text-sky mt-3">★ 2</p>
-      </a>
-      <a href="https://github.com/zskbot/awesome-claude-skills" target="_blank" rel="noopener" class="card p-5 rounded-xl bg-panel border border-line block">
-        <h4 class="text-slate-100 font-semibold mb-1">awesome-claude-skills</h4>
-        <p class="text-sm text-slate-400">Tuyển tập Claude Skills, resources &amp; tools cho Claude Code.</p>
-        <p class="text-xs text-sky mt-3">★ 2</p>
-      </a>
-      <a href="https://github.com/zskbot/code-ollama" target="_blank" rel="noopener" class="card p-5 rounded-xl bg-panel border border-line block">
-        <h4 class="text-slate-100 font-semibold mb-1">code-ollama</h4>
-        <p class="text-sm text-slate-400">🦙 Ollama coding agent chạy trong terminal.</p>
-        <p class="text-xs text-sky mt-3">★ 2</p>
-      </a>
-      <a href="https://github.com/zskbot/.auren" target="_blank" rel="noopener" class="card p-5 rounded-xl bg-panel border border-line block">
-        <h4 class="text-slate-100 font-semibold mb-1">.auren</h4>
-        <p class="text-sm text-slate-400">Cấu hình &amp; workflow tác nhân.</p>
-        <p class="text-xs text-sky mt-3">★ 2</p>
-      </a>
-      <a href="https://github.com/zskbot" target="_blank" rel="noopener" class="card p-5 rounded-xl bg-panel border border-line block flex flex-col justify-center items-center text-center">
-        <h4 class="text-slate-100 font-semibold mb-1">+ 192 repos</h4>
-        <p class="text-sm text-slate-400">Xem toàn bộ trên GitHub</p>
-        <p class="text-xs text-sky mt-3">github.com/zskbot ↗</p>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact" class="py-24 border-t border-line/60">
-  <div class="max-w-6xl mx-auto px-6 text-center">
-    <p class="text-sky text-sm mb-2 tracking-widest uppercase">// contact</p>
-    <h2 class="text-3xl font-bold text-slate-50 mb-4">Kết nối với tôi</h2>
-    <p class="text-slate-400 mb-10 max-w-xl mx-auto">Mở repo, góp ý, hay cùng xây dựng tác nhân lập trình tốt hơn — mọi đóng góp đều được chào đón.</p>
-    <div class="flex flex-wrap justify-center gap-3">
-      <a href="https://github.com/zskbot" target="_blank" rel="noopener"
-         class="px-5 py-3 rounded-lg border border-line bg-panel hover:border-sky/50 hover:text-sky transition">GitHub</a>
-      <a href="https://kio.ai" target="_blank" rel="noopener"
-         class="px-5 py-3 rounded-lg border border-line bg-panel hover:border-violet/50 hover:text-violet transition">kio.ai</a>
-      <a href="https://github.com/zskbot/kio.ai" target="_blank" rel="noopener"
-         class="px-5 py-3 rounded-lg border border-line bg-panel hover:border-mint/50 hover:text-mint transition">KIO.ai repo</a>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="border-t border-line/60 py-8">
-  <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-slate-500">
-    <p>© 2026 Huỳnh Thương · <span class="text-sky">zskbot</span></p>
-    <p class="flex items-center gap-2">
-      <span class="w-2 h-2 rounded-full bg-mint animate-pulse"></span>
-      status: active development
-    </p>
-  </div>
-</footer>
-
-<!-- KIO.ai CHAT WIDGET -->
-<button id="kio-chat-toggle" aria-label="Mở chat với KIO.ai">💬</button>
-
-<div id="kio-chat-panel">
-  <div id="kio-chat-header">
-    <div class="flex items-center gap-2">
-      <span class="dot"></span>
-      <span class="text-sm text-slate-200 font-semibold">KIO.ai agent</span>
-    </div>
-    <button id="kio-chat-close">✕</button>
-  </div>
-  <div id="kio-chat-body">
-    <div class="kio-msg agent">Chào bạn 👋 Mình là KIO.ai. Gõ một yêu cầu lập trình — mình sẽ chọn skill/tool phù hợp, lên kế hoạch và trả lời.</div>
-  </div>
-  <form id="kio-chat-form">
-    <input id="kio-chat-input" type="text" placeholder="Hỏi KIO.ai..." autocomplete="off" />
-    <button id="kio-chat-send" type="submit">Gửi</button>
-  </form>
-</div>
-
-<script>
-(function () {
-  // Backend chạy cùng origin khi được serve bởi server.py (xem README).
-  // Nếu mở index.html trực tiếp (file://) hoặc host tĩnh riêng (GitHub Pages),
-  // đổi API_BASE thành URL server.py đang chạy, ví dụ: "http://localhost:8000"
-  const API_BASE = window.KIO_API_BASE || "";
-
-  const toggle = document.getElementById("kio-chat-toggle");
-  const panel = document.getElementById("kio-chat-panel");
-  const closeBtn = document.getElementById("kio-chat-close");
-  const form = document.getElementById("kio-chat-form");
-  const input = document.getElementById("kio-chat-input");
-  const body = document.getElementById("kio-chat-body");
-  const sendBtn = document.getElementById("kio-chat-send");
-
-  toggle.addEventListener("click", () => panel.classList.toggle("open"));
-  closeBtn.addEventListener("click", () => panel.classList.remove("open"));
-
-  function addMsg(text, who) {
-    const el = document.createElement("div");
-    el.className = "kio-msg " + who;
-    el.textContent = text;
-    body.appendChild(el);
-    body.scrollTop = body.scrollHeight;
-    return el;
-  }
-
-  function addMeta(text) {
-    const el = document.createElement("div");
-    el.className = "kio-meta";
-    el.textContent = text;
-    body.appendChild(el);
-    body.scrollTop = body.scrollHeight;
-  }
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const message = input.value.trim();
-    if (!message) return;
-
-    addMsg(message, "user");
-    input.value = "";
-    sendBtn.disabled = true;
-    const thinking = addMsg("Đang xử lý...", "agent");
-
-    try {
-      const res = await fetch(API_BASE + "/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message }),
-      });
-      const data = await res.json();
-
-      thinking.remove();
-      if (data.error) {
-        addMsg("Lỗi: " + data.error, "agent");
-      } else {
-        addMsg(data.reply, "agent");
-        if (data.route) {
-          addMeta("skills: " + data.route.skills.join(", ") + "  ·  tools: " + data.route.tools.join(", "));
-        }
-      }
-    } catch (err) {
-      thinking.remove();
-      addMsg(
-        "Không kết nối được backend (" + API_BASE + "/api/chat). " +
-        "Hãy chắc chắn server.py đang chạy — xem README.md.",
-        "agent"
-      );
-    } finally {
-      sendBtn.disabled = false;
-    }
-  });
-})();
-</script>
-
-</body>
-</html>
+        <h4 class="text-slate-100 font-semi
