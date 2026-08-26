@@ -56,6 +56,29 @@ GitHub Pages **chỉ phục vụ file tĩnh**, không chạy được Python. V�
 3. Giữ `index.html` trên GitHub Pages như cũ (`zskbot.github.io/zskbot-kio-ai`),
    nó sẽ gọi API sang server thật ở bước 1.
 
+## Terminal trên web (chỉ chạy được từ localhost)
+
+Trang có nút `>_` (bên cạnh nút chat 💬) mở một bảng terminal nhỏ:
+
+1. Server mặc định chỉ bind `127.0.0.1` (xem biến `HOST` trong `.env`) —
+   nghĩa là **chỉ máy đang chạy `server.py` mới mở được trang này và gọi được
+   terminal**, máy khác trong mạng hay từ internet đều không thấy server.
+2. Bạn chọn 1 lệnh có sẵn trong dropdown (lấy từ `TERMINAL_ALLOWLIST` trong
+   `server.py`) rồi bấm "Chạy" — **không gõ lệnh tự do**.
+3. Lần đầu bấm chạy, trình duyệt hỏi `AGENT_TOKEN` — nhập đúng giá trị bạn
+   đặt trong `.env`. Sai token sẽ bị chặn (401).
+4. Muốn thêm lệnh: mở `server.py`, thêm dòng mới vào `TERMINAL_ALLOWLIST`,
+   ví dụ:
+   ```python
+   "docker ps": ["docker", "ps"],
+   ```
+   rồi khởi động lại server — lệnh mới sẽ tự xuất hiện trong dropdown.
+
+Thiết kế này **cố tình không** cho nhập lệnh tự do/shell string, vì đó là
+cách một trang web biến thành cửa thực thi lệnh (RCE) nếu chẳng may bị lộ
+ra ngoài. Nếu bạn thực sự cần một shell tự do để tự dùng cá nhân, cách an
+toàn hơn là SSH thẳng vào máy đó, không phải qua giao diện web.
+
 ## Về các tool "nhạy cảm" (git / github / http / terminal)
 
 Đây là các tool có thể đọc/ghi hệ thống hoặc gọi ra ngoài, nên:
