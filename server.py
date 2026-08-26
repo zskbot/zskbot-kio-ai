@@ -59,8 +59,16 @@ TERMINAL_ALLOWLIST = {
     "ls": ["ls", "-la"],
     "git status": ["git", "status"],
     "git log": ["git", "log", "--oneline", "-n", "20"],
+    "git diff": ["git", "diff", "--stat"],
+    "git branch": ["git", "branch", "-a"],
     "python version": ["python3", "--version"],
     "pip list": ["pip", "list"],
+    "node version": ["node", "--version"],
+    "npm list": ["npm", "list", "--depth=0"],
+    "disk usage": ["du", "-sh", "."],
+    "whoami": ["whoami"],
+    "date": ["date"],
+    "env python packages": ["pip", "freeze"],
 }
 
 app = Flask(__name__, static_folder=None)
@@ -247,6 +255,12 @@ def api_scan():
     return jsonify(scan_workspace(WORKSPACE))
 
 
+@app.get("/api/terminal/commands")
+def api_terminal_commands():
+    """Danh sách lệnh được phép chạy qua tool terminal — để frontend hiển thị."""
+    return jsonify({"commands": sorted(TERMINAL_ALLOWLIST.keys())})
+
+
 @app.post("/api/chat")
 def api_chat():
     body = request.get_json(force=True, silent=True) or {}
@@ -317,5 +331,11 @@ def api_tool(name):
 
 if __name__ == "__main__":
     port = int(os.getenv("PORT", "8000"))
-    print(f"KIO.ai backend đang chạy tại http://localhost:{port}  (workspace: {WORKSPACE})")
-    app.run(host="0.0.0.0", port=port, debug=os.getenv("DEBUG", "0") == "1")
+    # Mặc định chỉ bind 127.0.0.1 (localhost) — không ai từ mạng ngoài/internet
+    # truy cập được, kể cả khi bạn quên tắt server. Chỉ đổi thành "0.0.0.0"
+    # nếu bạn CHỦ ĐỘNG muốn expose ra ngoài và đã hiểu rủi ro (đọc README).
+    host = os.getenv("HOST", "127.0.0.1")
+    print(f"KIO.ai backend đang chạy tại http://{host}:{port}  (workspace: {WORKSPACE})")
+    if host != "127.0.0.1":
+        print("⚠️  CẢNH BÁO: server đang bind ra ngoài localhost — chỉ làm vậy nếu bạn chắc chắn.")
+    app.run(host=host, port=port, debug=os.getenv("DEBUG", "0") == "1")
